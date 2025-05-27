@@ -1,7 +1,11 @@
+
 package roadregistry;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.io.File;
 
 /**
  * Unit tests for addPerson() method in Person class.
@@ -9,14 +13,22 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class AddPersonTest {
 
+    @BeforeEach
+    void resetDataFile() {
+        File file = new File("data/people.txt");
+        if (file.exists()) {
+            file.delete();
+        }
+    }
+
     /**
      * Test Case 1: All data valid
      * Expectation: Person should be added successfully.
      */
     @Test
     public void testValidPerson_AllCorrect() {
-        Person p = new Person("56s_d%&fAB", "John", "Doe", 
-            "32|Highland Street|Melbourne|Victoria|Australia", "15-11-1990");
+        Person p = new Person("78!@#%_zAB", "John", "Doe",
+                "32|Highland Street|Melbourne|Victoria|Australia", "15-11-1990");
         assertTrue(p.addPerson());
     }
 
@@ -26,8 +38,8 @@ public class AddPersonTest {
      */
     @Test
     public void testInvalidPersonID_FormatWrong() {
-        Person p = new Person("12abcXYZaa", "Jane", "Smith", 
-            "32|Highland Street|Melbourne|Victoria|Australia", "15-11-1990");
+        Person p = new Person("12abcXYZaa", "Jane", "Smith",
+                "32|Highland Street|Melbourne|Victoria|Australia", "15-11-1990");
         assertFalse(p.addPerson());
     }
 
@@ -37,8 +49,8 @@ public class AddPersonTest {
      */
     @Test
     public void testInvalidAddress_WrongState() {
-        Person p = new Person("78@#_$!%CD", "Alice", "Lee", 
-            "12|George Street|Sydney|NSW|Australia", "10-05-1995");
+        Person p = new Person("89##@@__GH", "Alice", "Lee",
+                "12|George Street|Sydney|NSW|Australia", "10-05-1995");
         assertFalse(p.addPerson());
     }
 
@@ -48,8 +60,8 @@ public class AddPersonTest {
      */
     @Test
     public void testInvalidBirthdateFormat() {
-        Person p = new Person("89*&^%$#GH", "Bob", "Chan", 
-            "22|King Street|Melbourne|Victoria|Australia", "1990-11-15");  // Wrong format
+        Person p = new Person("77&*^^!!KL", "Bob", "Chan",
+                "22|King Street|Melbourne|Victoria|Australia", "1990/11/15");
         assertFalse(p.addPerson());
     }
 
@@ -59,12 +71,13 @@ public class AddPersonTest {
      */
     @Test
     public void testDuplicatePersonID() {
-        Person p1 = new Person("66!!__++IJ", "Test", "User", 
-            "33|Main Road|Melbourne|Victoria|Australia", "15-11-1990");
-        Person p2 = new Person("66!!__++IJ", "Another", "User", 
-            "33|Main Road|Melbourne|Victoria|Australia", "15-11-1990");
+        String personID = "99$$__++ZZ";
+        Person p1 = new Person(personID, "Test", "User",
+                "33|Main Road|Melbourne|Victoria|Australia", "15-11-1990");
+        Person p2 = new Person(personID, "Another", "User",
+                "33|Main Road|Melbourne|Victoria|Australia", "15-11-1990");
 
-        assertTrue(p1.addPerson());     // Expected to succeed
-        assertFalse(p2.addPerson());    // Expected to fail due to duplicate ID
+        assertTrue(p1.addPerson());     // First insert: should succeed
+        assertFalse(p2.addPerson());    // Second insert: should fail (duplicate ID)
     }
 }
