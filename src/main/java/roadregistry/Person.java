@@ -24,7 +24,7 @@ public class Person {
     private String lastName;
     private String address;
     private String birthdate;
-    private HashMap<Date, Integer> demeritPoints; // Maps offense date to demerit points
+    private HashMap<LocalDate, Integer> demeritPoints; // Maps offense date to demerit points
     private boolean isSuspended;
     
     // File paths for data storage
@@ -227,8 +227,8 @@ public class Person {
             loadDemeritPointsForPerson(this.personID);
             
             // Add new demerit points
-            this.demeritPoints.put(offenseJavaDate, points);
-            
+            this.demeritPoints.put(offense, points);  
+
             // Calculate suspension status based on age and total points in last 2 years
             updateSuspensionStatus(existingPerson.birthdate, offense);
             
@@ -356,8 +356,8 @@ public class Person {
         LocalDate twoYearsAgo = offenseDate.minusYears(2);
         
         int totalPoints = 0;
-        for (Map.Entry<Date, Integer> entry : this.demeritPoints.entrySet()) {
-            LocalDate pointDate = entry.getKey().toLocalDate();
+        for (Map.Entry<LocalDate, Integer> entry : this.demeritPoints.entrySet()) {
+            LocalDate pointDate = entry.getKey();
             if (!pointDate.isBefore(twoYearsAgo)) {
                 totalPoints += entry.getValue();
             }
@@ -491,7 +491,7 @@ public class Person {
                 if (parts.length >= 3 && parts[0].equals(personID)) {
                     LocalDate date = LocalDate.parse(parts[1], DATE_FORMATTER);
                     int points = Integer.parseInt(parts[2]);
-                    this.demeritPoints.put(java.sql.Date.valueOf(date), points);
+                    this.demeritPoints.put(date, points);  
                 }
             }
         } catch (IOException | NumberFormatException e) {
@@ -541,8 +541,8 @@ public class Person {
     public String getBirthdate() { return birthdate; }
     public void setBirthdate(String birthdate) { this.birthdate = birthdate; }
     
-    public HashMap<Date, Integer> getDemeritPoints() { return demeritPoints; }
-    public void setDemeritPoints(HashMap<Date, Integer> demeritPoints) { this.demeritPoints = demeritPoints; }
+    public HashMap<LocalDate, Integer> getDemeritPoints() { return demeritPoints; }
+    public void setDemeritPoints(HashMap<LocalDate, Integer> demeritPoints) { this.demeritPoints = demeritPoints; }
     
     public boolean getIsSuspended() { return isSuspended; }
     public void setIsSuspended(boolean isSuspended) { this.isSuspended = isSuspended; }
