@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="roadregistry.AddPersonTest" time="0.062" tests="5" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="roadregistry.AddDemeritPointsTest" time="0.012" tests="5" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="17"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -53,21 +53,27 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="61.0"/>
   </properties>
-  <testcase name="testInvalidAddress_WrongState" classname="roadregistry.AddPersonTest" time="0.021">
-    <system-out><![CDATA[Invalid address format
+  <testcase name="testInvalidDateFormat" classname="roadregistry.AddDemeritPointsTest" time="0.001">
+    <system-out><![CDATA[Invalid offense date format. Use DD-MM-YYYY
 ]]></system-out>
   </testcase>
-  <testcase name="testDuplicatePersonID" classname="roadregistry.AddPersonTest" time="0.019">
+  <testcase name="testValidDemeritPointsAddition" classname="roadregistry.AddDemeritPointsTest" time="0.002">
     <system-out><![CDATA[Person with this ID already exists
 ]]></system-out>
   </testcase>
-  <testcase name="testValidPerson_AllCorrect" classname="roadregistry.AddPersonTest" time="0.002"/>
-  <testcase name="testInvalidPersonID_FormatWrong" classname="roadregistry.AddPersonTest" time="0.0">
-    <system-out><![CDATA[Invalid PersonID format
+  <testcase name="testAddDemeritToNonExistingPerson" classname="roadregistry.AddDemeritPointsTest" time="0.002">
+    <system-out><![CDATA[Person with this ID already exists
+Person not found
 ]]></system-out>
   </testcase>
-  <testcase name="testInvalidBirthdateFormat" classname="roadregistry.AddPersonTest" time="0.001">
-    <system-out><![CDATA[Invalid birthdate format or future date
+  <testcase name="testInvalidPointsTooLow" classname="roadregistry.AddDemeritPointsTest" time="0.002">
+    <system-out><![CDATA[Person with this ID already exists
+Demerit points must be between 1 and 6
+]]></system-out>
+  </testcase>
+  <testcase name="testInvalidPointsTooHigh" classname="roadregistry.AddDemeritPointsTest" time="0.001">
+    <system-out><![CDATA[Person with this ID already exists
+Demerit points must be between 1 and 6
 ]]></system-out>
   </testcase>
 </testsuite>
