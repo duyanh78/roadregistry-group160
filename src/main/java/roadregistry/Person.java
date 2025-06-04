@@ -13,7 +13,7 @@ import java.util.*;
  * and managing demerit points with suspension logic.
  * 
  * @author Group 160
- * @version 1.2
+ * @version 1.3
  */
 public class Person {
     
@@ -23,7 +23,7 @@ public class Person {
     private String lastName;
     private String address;
     private String birthdate;
-    private HashMap<Date, Integer> demeritPoints; // Maps offense date to demerit points
+    private HashMap<java.sql.Date, Integer> demeritPoints; // Maps offense date to demerit points
     private boolean isSuspended;
     
     // File paths for data storage
@@ -223,7 +223,7 @@ public class Person {
             }
             
             loadDemeritPointsForPerson(this.personID);
-            Date offenseJavaDate = java.sql.Date.valueOf(offense);
+            java.sql.Date offenseJavaDate = java.sql.Date.valueOf(offense);
             this.demeritPoints.put(offenseJavaDate, points);
             updateSuspensionStatus(existingPerson.birthdate, offense);
             
@@ -281,7 +281,7 @@ public class Person {
     
     /**
      * Validates address format: "Number|Street|City|State|Country" where State = "Victoria"
-     * Also checks that Number is numeric
+     * Also checks that Number is numeric and positive
      */
     private boolean isValidAddress(String address) {
         if (address == null || address.trim().isEmpty()) {
@@ -297,7 +297,10 @@ public class Person {
             }
         }
         try {
-            Integer.parseInt(parts[0].trim());
+            int number = Integer.parseInt(parts[0].trim());
+            if (number <= 0) {
+                return false;
+            }
         } catch (NumberFormatException e) {
             return false;
         }
@@ -338,7 +341,7 @@ public class Person {
     }
     
     /**
-     * Calculates age from birthdate string
+     * Calculates age from birthdate string as of today
      */
     private int calculateAge(String birthdate) {
         try {
@@ -350,20 +353,20 @@ public class Person {
     }
     
     /**
-     * Updates suspension status based on age and demerit points in last 2 years
+     * Updates suspension status based on age at offense date and demerit points in last 2 years
      */
     private void updateSuspensionStatus(String birthdate, LocalDate offenseDate) {
-        int age = calculateAge(birthdate);
+        LocalDate birth = LocalDate.parse(birthdate, DATE_FORMATTER);
+        int ageAtOffense = Period.between(birth, offenseDate).getYears();
         LocalDate twoYearsAgo = offenseDate.minusYears(2);
         int totalPoints = 0;
-        for (Map.Entry<Date, Integer> entry : this.demeritPoints.entrySet()) {
-            // entry.getKey() is a java.sql.Date → có toLocalDate()
-            LocalDate pointDate = ((java.sql.Date) entry.getKey()).toLocalDate();
+        for (Map.Entry<java.sql.Date, Integer> entry : this.demeritPoints.entrySet()) {
+            LocalDate pointDate = entry.getKey().toLocalDate();
             if (!pointDate.isBefore(twoYearsAgo)) {
                 totalPoints += entry.getValue();
             }
         }
-        if (age < 21) {
+        if (ageAtOffense < 21) {
             this.isSuspended = totalPoints > 6;
         } else {
             this.isSuspended = totalPoints > 12;
@@ -522,31 +525,32 @@ public class Person {
      * Updates suspension status in person file
      */
     private void updatePersonSuspensionStatus(Person existingPerson) {
-        // Copy current person data to preserve all fields
+        // Preserve original fields of 'this'
         String originalPersonID  = this.personID;
         String originalFirstName = this.firstName;
         String originalLastName  = this.lastName;
         String originalAddress   = this.address;
         String originalBirthdate = this.birthdate;
+        boolean originalSusp     = this.isSuspended;
         
-        // Set to existing person's data but with updated suspension status
-        this.personID     = existingPerson.personID;
-        this.firstName    = existingPerson.firstName;
-        this.lastName     = existingPerson.lastName;
-        this.address      = existingPerson.address;
-        this.birthdate    = existingPerson.birthdate;
-        this.isSuspended  = existingPerson.isSuspended;
+        // Set 'this' to existing person's data, but keep computed suspension status
+        this.personID    = existingPerson.personID;
+        this.firstName   = existingPerson.firstName;
+        this.lastName    = existingPerson.lastName;
+        this.address     = existingPerson.address;
+        this.birthdate   = existingPerson.birthdate;
+        // 'this.isSuspended' already holds the new suspension status
         
-        // Update in file
+        // Write to file
         updatePersonInFile(existingPerson.personID);
         
-        // Restore original data
-        this.personID     = originalPersonID;
-        this.firstName    = originalFirstName;
-        this.lastName     = originalLastName;
-        this.address      = originalAddress;
-        this.birthdate    = originalBirthdate;
-        // isSuspended đã là giá trị mới, không cần restore
+        // Restore 'this' to original values
+        this.personID    = originalPersonID;
+        this.firstName   = originalFirstName;
+        this.lastName    = originalLastName;
+        this.address     = originalAddress;
+        this.birthdate   = originalBirthdate;
+        this.isSuspended = originalSusp;
     }
     
     // Getter and Setter methods
@@ -565,8 +569,8 @@ public class Person {
     public String getBirthdate() { return birthdate; }
     public void setBirthdate(String birthdate) { this.birthdate = birthdate; }
     
-    public HashMap<Date, Integer> getDemeritPoints() { return demeritPoints; }
-    public void setDemeritPoints(HashMap<Date, Integer> demeritPoints) {
+    public HashMap<java.sql.Date, Integer> getDemeritPoints() { return demeritPoints; }
+    public void setDemeritPoints(HashMap<java.sql.Date, Integer> demeritPoints) {
         this.demeritPoints = demeritPoints;
     }
     
