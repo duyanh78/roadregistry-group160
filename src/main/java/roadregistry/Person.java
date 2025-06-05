@@ -8,12 +8,9 @@ import java.time.Period;
 import java.util.*;
 
 /**
- * Person class for RoadRegistry platform
- * Handles person management including adding persons, updating personal details,
- * and managing demerit points with suspension logic.
  * 
  * @author Group 160
- * @version 1.3
+ * @version final
  */
 public class Person {
     
@@ -23,31 +20,34 @@ public class Person {
     private String lastName;
     private String address;
     private String birthdate;
-    private HashMap<java.sql.Date, Integer> demeritPoints; // Maps offense date to demerit points
+    private HashMap<java.sql.Date, Integer> demeritPoints; // Maps  offense date to number of demerit points received on that date.
     private boolean isSuspended;
     
-    // File paths for data storage
+    // We store data in file paths
     private static final String PERSON_FILE = "data/people.txt";
     private static final String DEMERIT_FILE = "data/demerit_points.txt";
     
-    // File delimiter - using ### to avoid conflict with | in addresses
+    // Our group using "###" as the delimiter when saving data to the file.
+    // This is because the address field of assignment 4 already uses "|" between parts (e.g.32|Highland Street|Melbourne|Victoria|Australia.
+    // If we used "|" as the main separator, it would mess up the splitting when reading from file.
+    // So to avoid that conflict, we use "###" which is less likely to appear in normal data.
     private static final String DELIMITER = "###";
     
     // Date formatter for consistent date handling
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     
-    /**
-     * Default constructor
-     */
+    
+     //// Empty constructor - this let us create a blank person and fill in the details later
+
     public Person() {
         this.demeritPoints = new HashMap<>();
         this.isSuspended = false;
         createDataDirectoryIfNotExists();
     }
     
-    /**
-     * Parameterized constructor
-     */
+    
+     // // Constructor with all required info - let us create a person 
+    
     public Person(String personID, String firstName, String lastName, String address, String birthdate) {
         this.personID = personID;
         this.firstName = firstName;
@@ -71,46 +71,46 @@ public class Person {
     
     /**
      * Adds a person to the system with comprehensive validation
-     * 
+     * following assignment, we have some validation
      * Validation Rules:
      * 1. PersonID: exactly 10 characters, first 2 are numbers (2-9), 
      *    at least 2 special characters in positions 3-8, last 2 are uppercase letters
      * 2. Address: format "Number|Street|City|State|Country" where State must be "Victoria"
-     * 3. Birthdate: format "DD-MM-YYYY" and not in the future
+     * 3. Birthdate: format "DD-MM-YYYY" and birthdate must be the date in the past 
      * 
      * @return true if person is successfully added, false otherwise
      */
     public boolean addPerson() {
         try {
             if (!isValidPersonID(this.personID)) {
-                System.out.println("Invalid PersonID format");
+                System.out.println("PersonID format is wrong");
                 return false;
             }
             if (!isValidName(this.firstName) || !isValidName(this.lastName)) {
-                System.out.println("Invalid name - cannot be empty");
+                System.out.println("Invalid name because it cannot be empty");
                 return false;
             }
             if (!isValidAddress(this.address)) {
-                System.out.println("Invalid address format");
+                System.out.println("Address format is WRong");
                 return false;
             }
             if (!isValidBirthdate(this.birthdate)) {
-                System.out.println("Invalid birthdate format or future date");
+                System.out.println("Invalid birthdate format or birthdate input is future date");
                 return false;
             }
             if (personExists(this.personID)) {
-                System.out.println("Person with this ID already exists");
+                System.out.println("Person with this ID have already existed");
                 return false;
             }
             return savePersonToFile();
         } catch (Exception e) {
-            System.out.println("Error adding person: " + e.getMessage());
+            System.out.println("Error while adding person: " + e.getMessage());
             return false;
         }
     }
     
     /**
-     * Updates personal details of an existing person with additional business rules
+     * Updates personal details of an existing person with additional rules from assignment 4
      * 
      * Additional Rules:
      * 1. If person is under 18, their address cannot be changed
@@ -125,7 +125,7 @@ public class Person {
         try {
             Person existingPerson = getPersonFromFile(oldPersonID);
             if (existingPerson == null) {
-                System.out.println("Person not found");
+                System.out.println("Person not found in DB ");
                 return false;
             }
             
@@ -134,7 +134,7 @@ public class Person {
                 return false;
             }
             if (!isValidName(this.firstName) || !isValidName(this.lastName)) {
-                System.out.println("Invalid name - cannot be empty");
+                System.out.println("Invalid name , it cannot be empty");
                 return false;
             }
             if (!isValidAddress(this.address)) {
@@ -142,14 +142,14 @@ public class Person {
                 return false;
             }
             if (!isValidBirthdate(this.birthdate)) {
-                System.out.println("Invalid birthdate format or future date");
+                System.out.println("Invalid birthdate format or birthdate input is future date");
                 return false;
             }
             
             // Rule 1: If person is under 18, address cannot be changed
             int age = calculateAge(existingPerson.birthdate);
             if (age < 18 && !existingPerson.address.equals(this.address)) {
-                System.out.println("Cannot change address for person under 18");
+                System.out.println("Cannot change an address for person under 18");
                 return false;
             }
             
@@ -159,7 +159,7 @@ public class Person {
                     !existingPerson.firstName.equals(this.firstName) ||
                     !existingPerson.lastName.equals(this.lastName) ||
                     !existingPerson.address.equals(this.address)) {
-                    System.out.println("When changing birthday, no other personal details can be changed");
+                    System.out.println("When changing birthday, no others personal detail can be changed");
                     return false;
                 }
             }
@@ -172,7 +172,7 @@ public class Person {
                     return false;
                 }
                 if (personExists(this.personID)) {
-                    System.out.println("New PersonID already exists");
+                    System.out.println("New PersonID already exists in DB so ID cannot be change");
                     return false;
                 }
             }
@@ -182,16 +182,16 @@ public class Person {
             
             return updatePersonInFile(oldPersonID);
         } catch (Exception e) {
-            System.out.println("Error updating personal details: " + e.getMessage());
+            System.out.println("We have error when updating personal details " + e.getMessage());
             return false;
         }
     }
     
     /**
-     * Adds demerit points for a person with suspension logic
+     * Adds demerit points for a person with suspension logic from assginment 4
      * 
      * Rules:
-     * 1. Date format must be DD-MM-YYYY and not in the future
+     * 1. Date offense format must be DD-MM-YYYY and not in the future (offense must happen in the past)
      * 2. Demerit points must be 1-6 (whole number)
      * 3. Suspension logic:
      *    - Under 21: suspended if total points in 2 years > 6
@@ -204,12 +204,12 @@ public class Person {
     public String addDemeritPoints(String offenseDate, int points) {
         try {
             if (!isValidDateFormat(offenseDate)) {
-                System.out.println("Invalid offense date format. Use DD-MM-YYYY");
+                System.out.println("Invalid offense date format, please use DD-MM-YYYY");
                 return "Failed";
             }
             LocalDate offense = LocalDate.parse(offenseDate, DATE_FORMATTER);
             if (offense.isAfter(LocalDate.now())) {
-                System.out.println("Offense date cannot be in the future");
+                System.out.println("Offense date cannot be in the future, offense must happen in the past ");
                 return "Failed";
             }
             if (points < 1 || points > 6) {
@@ -234,7 +234,7 @@ public class Person {
                 return "Failed";
             }
         } catch (Exception e) {
-            System.out.println("Error adding demerit points: " + e.getMessage());
+            System.out.println("we have error when adding demerit points: " + e.getMessage());
             return "Failed";
         }
     }
@@ -281,7 +281,7 @@ public class Person {
     
     /**
      * Validates address format: "Number|Street|City|State|Country" where State = "Victoria"
-     * Also checks that Number is numeric and positive
+     * Also checks that Number is numeric and positive (not mentioned in assignment but we want this validaiton)
      */
     private boolean isValidAddress(String address) {
         if (address == null || address.trim().isEmpty()) {
@@ -341,7 +341,7 @@ public class Person {
     }
     
     /**
-     * Calculates age from birthdate string as of today
+     * Calculates age from birthdate string to the day running this function 
      */
     private int calculateAge(String birthdate) {
         try {
@@ -374,7 +374,7 @@ public class Person {
     }
     
     /**
-     * Checks if person exists in file
+     * Checks if person exists in txt file
      */
     private boolean personExists(String personID) {
         return getPersonFromFile(personID) != null;
@@ -525,7 +525,7 @@ public class Person {
      * Updates suspension status in person file
      */
     private void updatePersonSuspensionStatus(Person existingPerson) {
-        // Preserve original fields of 'this'
+        /// Save the original values of this object so we can put them back later if needed
         String originalPersonID  = this.personID;
         String originalFirstName = this.firstName;
         String originalLastName  = this.lastName;
@@ -533,7 +533,7 @@ public class Person {
         String originalBirthdate = this.birthdate;
         boolean originalSusp     = this.isSuspended;
         
-        // Set 'this' to existing person's data, but keep computed suspension status
+        // Copy all the old person's info into this object, but keep the new suspension status we just calculated
         this.personID    = existingPerson.personID;
         this.firstName   = existingPerson.firstName;
         this.lastName    = existingPerson.lastName;
@@ -544,7 +544,7 @@ public class Person {
         // Write to file
         updatePersonInFile(existingPerson.personID);
         
-        // Restore 'this' to original values
+        // Put back the original values into this object after updating the file
         this.personID    = originalPersonID;
         this.firstName   = originalFirstName;
         this.lastName    = originalLastName;

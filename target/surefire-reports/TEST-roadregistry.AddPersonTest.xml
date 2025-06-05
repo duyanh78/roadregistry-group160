@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="roadregistry.AddPersonTest" time="0.062" tests="5" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="roadregistry.AddPersonTest" time="0.091" tests="16" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="17"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -13,7 +13,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="US"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-17-openjdk-amd64/lib"/>
-    <property name="sun.java.command" value="/home/duyanh/RoadRegistryAssignment4/target/surefire/surefirebooter-20250604220525622_3.jar /home/duyanh/RoadRegistryAssignment4/target/surefire 2025-06-04T22-05-25_557-jvmRun1 surefire-20250604220525622_1tmp surefire_0-20250604220525622_2tmp"/>
+    <property name="sun.java.command" value="/home/duyanh/RoadRegistryAssignment4/target/surefire/surefirebooter-20250606001317703_3.jar /home/duyanh/RoadRegistryAssignment4/target/surefire 2025-06-06T00-13-17_642-jvmRun1 surefire-20250606001317703_1tmp surefire_0-20250606001317703_2tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/home/duyanh/RoadRegistryAssignment4/target/test-classes:/home/duyanh/RoadRegistryAssignment4/target/classes:/home/duyanh/.m2/repository/org/junit/jupiter/junit-jupiter/5.12.2/junit-jupiter-5.12.2.jar:/home/duyanh/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.12.2/junit-jupiter-api-5.12.2.jar:/home/duyanh/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/home/duyanh/.m2/repository/org/junit/platform/junit-platform-commons/1.12.2/junit-platform-commons-1.12.2.jar:/home/duyanh/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.12.2/junit-jupiter-params-5.12.2.jar:/home/duyanh/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.12.2/junit-jupiter-engine-5.12.2.jar:/home/duyanh/.m2/repository/org/junit/platform/junit-platform-engine/1.12.2/junit-platform-engine-1.12.2.jar:/home/duyanh/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -28,12 +28,12 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="/home/duyanh/RoadRegistryAssignment4/target/surefire/surefirebooter-20250604220525622_3.jar"/>
+    <property name="surefire.real.class.path" value="/home/duyanh/RoadRegistryAssignment4/target/surefire/surefirebooter-20250606001317703_3.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="17.0.14+7-Ubuntu-122.04.1"/>
     <property name="user.name" value="duyanh"/>
     <property name="path.separator" value=":"/>
-    <property name="os.version" value="6.8.0-52-generic"/>
+    <property name="os.version" value="6.8.0-60-generic"/>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
     <property name="file.encoding" value="UTF-8"/>
     <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
@@ -53,21 +53,65 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="61.0"/>
   </properties>
-  <testcase name="testInvalidAddress_WrongState" classname="roadregistry.AddPersonTest" time="0.021">
-    <system-out><![CDATA[Invalid address format
+  <testcase name="testPersonIDStartsWithInvalidDigit" classname="roadregistry.AddPersonTest" time="0.034">
+    <system-out><![CDATA[PersonID format is wrong
 ]]></system-out>
   </testcase>
-  <testcase name="testDuplicatePersonID" classname="roadregistry.AddPersonTest" time="0.019">
-    <system-out><![CDATA[Person with this ID already exists
+  <testcase name="testBirthdateInFuture" classname="roadregistry.AddPersonTest" time="0.014">
+    <system-out><![CDATA[Invalid birthdate format or birthdate input is future date
 ]]></system-out>
   </testcase>
-  <testcase name="testValidPerson_AllCorrect" classname="roadregistry.AddPersonTest" time="0.002"/>
-  <testcase name="testInvalidPersonID_FormatWrong" classname="roadregistry.AddPersonTest" time="0.0">
-    <system-out><![CDATA[Invalid PersonID format
+  <testcase name="testFirstNameIsEmpty" classname="roadregistry.AddPersonTest" time="0.001">
+    <system-out><![CDATA[Invalid name because it cannot be empty
+]]></system-out>
+  </testcase>
+  <testcase name="testAddressNumberZero" classname="roadregistry.AddPersonTest" time="0.001">
+    <system-out><![CDATA[PersonID format is wrong
+]]></system-out>
+  </testcase>
+  <testcase name="testAddressNumberNotNumeric" classname="roadregistry.AddPersonTest" time="0.0">
+    <system-out><![CDATA[PersonID format is wrong
+]]></system-out>
+  </testcase>
+  <testcase name="testPersonIDTooShort" classname="roadregistry.AddPersonTest" time="0.0">
+    <system-out><![CDATA[PersonID format is wrong
+]]></system-out>
+  </testcase>
+  <testcase name="testAddressHasEmptyCity" classname="roadregistry.AddPersonTest" time="0.0">
+    <system-out><![CDATA[Address format is WRong
+]]></system-out>
+  </testcase>
+  <testcase name="testLastNameIsWhitespace" classname="roadregistry.AddPersonTest" time="0.0">
+    <system-out><![CDATA[Invalid name because it cannot be empty
+]]></system-out>
+  </testcase>
+  <testcase name="testValidPersonShouldBeAdded" classname="roadregistry.AddPersonTest" time="0.001"/>
+  <testcase name="testPersonIDEndsWithLowercase" classname="roadregistry.AddPersonTest" time="0.001">
+    <system-out><![CDATA[PersonID format is wrong
+]]></system-out>
+  </testcase>
+  <testcase name="testPersonIDSecondCharNotDigit" classname="roadregistry.AddPersonTest" time="0.0">
+    <system-out><![CDATA[PersonID format is wrong
+]]></system-out>
+  </testcase>
+  <testcase name="testStateIsNotVictoria" classname="roadregistry.AddPersonTest" time="0.0">
+    <system-out><![CDATA[Address format is WRong
+]]></system-out>
+  </testcase>
+  <testcase name="testAddressMissingCountry" classname="roadregistry.AddPersonTest" time="0.001">
+    <system-out><![CDATA[Address format is WRong
+]]></system-out>
+  </testcase>
+  <testcase name="testPersonIDNotEnoughSpecialCharacters" classname="roadregistry.AddPersonTest" time="0.001">
+    <system-out><![CDATA[PersonID format is wrong
+]]></system-out>
+  </testcase>
+  <testcase name="testDuplicatePersonID" classname="roadregistry.AddPersonTest" time="0.002">
+    <system-out><![CDATA[Person with this ID have already existed
 ]]></system-out>
   </testcase>
   <testcase name="testInvalidBirthdateFormat" classname="roadregistry.AddPersonTest" time="0.001">
-    <system-out><![CDATA[Invalid birthdate format or future date
+    <system-out><![CDATA[Invalid birthdate format or birthdate input is future date
 ]]></system-out>
   </testcase>
 </testsuite>

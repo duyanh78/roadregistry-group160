@@ -1,1 +1,2 @@
-78!@#%_zAB###John###Doe###32|Highland Street|Melbourne|Victoria|Australia###15-11-1990###false
+22!!QQWWER###PreExisting###User###55|Somewhere|Melbourne|Victoria|Australia###01-01-1980###false
+39!!ZZTTAB###Tim###Nguyen###66|Other Place|Melbourne|Victoria|Australia###01-01-1995###false
