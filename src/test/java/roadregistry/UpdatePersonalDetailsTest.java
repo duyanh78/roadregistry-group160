@@ -22,6 +22,13 @@ public class UpdatePersonalDetailsTest {
         return p;
     }
 
+    @BeforeAll
+    public static void clearPeopleFileOnceBeforeAllTests() {
+        File file = new File("data/people.txt");
+        if (file.exists()) {
+            file.delete();
+        }
+    }
 
     // Rule 1: Under 18 cannot change address
     @Test

@@ -23,6 +23,13 @@ public class AddPersonTest {
     private static final String PEOPLE_FILE = "data/people.txt";
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
+    @BeforeAll
+    public static void clearPeopleFileBeforeAllTests() {
+        File file = new File("data/people.txt"); // hoặc dùng biến hằng nếu có
+        if (file.exists()) {
+            file.delete();
+        }
+    }
 
     // test 1: Everything is valid -> should return true
     @Test
