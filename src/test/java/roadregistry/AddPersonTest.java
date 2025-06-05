@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+import org.junit.jupiter.api.BeforeAll;
 /**
  * JUnit tests for addPerson().
  * These cover all rules listed in the assignment:
@@ -23,14 +23,6 @@ public class AddPersonTest {
     private static final String PEOPLE_FILE = "data/people.txt";
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-    @BeforeEach
-    public void clearPeopleFileBeforeEachTest() {
-        // Remove the file (in file path) so each test starts with an empty list
-        File file = new File(PEOPLE_FILE);
-        if (file.exists()) {
-            file.delete();
-        }
-    }
 
     // test 1: Everything is valid -> should return true
     @Test

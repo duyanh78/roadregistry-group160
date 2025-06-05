@@ -1,7 +1,9 @@
 package roadregistry;
 
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
+import java.io.File;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,12 +22,6 @@ public class UpdatePersonalDetailsTest {
         return p;
     }
 
-    @BeforeEach
-    public void resetTestFile() {
-        // Clear people.txt before each test
-        java.io.File file = new java.io.File("data/people.txt");
-        if (file.exists()) file.delete();
-    }
 
     // Rule 1: Under 18 cannot change address
     @Test
