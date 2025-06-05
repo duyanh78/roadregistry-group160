@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="roadregistry.AddDemeritPointsTest" time="0.017" tests="5" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="roadregistry.AddDemeritPointsTest" time="0.074" tests="5" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="17"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -13,8 +13,9 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="US"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-17-openjdk-amd64/lib"/>
-    <property name="sun.java.command" value="/home/duyanh/RoadRegistryAssignment4/target/surefire/surefirebooter-20250606013217562_3.jar /home/duyanh/RoadRegistryAssignment4/target/surefire 2025-06-06T01-32-17_395-jvmRun1 surefire-20250606013217562_1tmp surefire_0-20250606013217562_2tmp"/>
+    <property name="sun.java.command" value="/home/duyanh/RoadRegistryAssignment4/target/surefire/surefirebooter-20250606015835842_3.jar /home/duyanh/RoadRegistryAssignment4/target/surefire 2025-06-06T01-58-35_770-jvmRun1 surefire-20250606015835842_1tmp surefire_0-20250606015835842_2tmp"/>
     <property name="jdk.debug" value="release"/>
+    <property name="test" value="AddDemeritPointsTest"/>
     <property name="surefire.test.class.path" value="/home/duyanh/RoadRegistryAssignment4/target/test-classes:/home/duyanh/RoadRegistryAssignment4/target/classes:/home/duyanh/.m2/repository/org/junit/jupiter/junit-jupiter/5.12.2/junit-jupiter-5.12.2.jar:/home/duyanh/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.12.2/junit-jupiter-api-5.12.2.jar:/home/duyanh/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/home/duyanh/.m2/repository/org/junit/platform/junit-platform-commons/1.12.2/junit-platform-commons-1.12.2.jar:/home/duyanh/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.12.2/junit-jupiter-params-5.12.2.jar:/home/duyanh/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.12.2/junit-jupiter-engine-5.12.2.jar:/home/duyanh/.m2/repository/org/junit/platform/junit-platform-engine/1.12.2/junit-platform-engine-1.12.2.jar:/home/duyanh/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:"/>
     <property name="sun.cpu.endian" value="little"/>
     <property name="user.home" value="/home/duyanh"/>
@@ -28,7 +29,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="/home/duyanh/RoadRegistryAssignment4/target/surefire/surefirebooter-20250606013217562_3.jar"/>
+    <property name="surefire.real.class.path" value="/home/duyanh/RoadRegistryAssignment4/target/surefire/surefirebooter-20250606015835842_3.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="17.0.14+7-Ubuntu-122.04.1"/>
     <property name="user.name" value="duyanh"/>
@@ -53,15 +54,15 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="61.0"/>
   </properties>
-  <testcase name="testInvalidDateFormat" classname="roadregistry.AddDemeritPointsTest" time="0.004">
+  <testcase name="testInvalidDateFormat" classname="roadregistry.AddDemeritPointsTest" time="0.042">
     <system-out><![CDATA[Invalid offense date format, please use DD-MM-YYYY
 ]]></system-out>
   </testcase>
-  <testcase name="testValidDemeritPointsAddition" classname="roadregistry.AddDemeritPointsTest" time="0.002">
+  <testcase name="testValidDemeritPointsAddition" classname="roadregistry.AddDemeritPointsTest" time="0.004">
     <system-out><![CDATA[Person with this ID have already existed
 ]]></system-out>
   </testcase>
-  <testcase name="testAddDemeritToNonExistingPerson" classname="roadregistry.AddDemeritPointsTest" time="0.001">
+  <testcase name="testAddDemeritToNonExistingPerson" classname="roadregistry.AddDemeritPointsTest" time="0.002">
     <system-out><![CDATA[Person with this ID have already existed
 Person not found
 ]]></system-out>
@@ -71,7 +72,7 @@ Person not found
 Demerit points must be between 1 and 6
 ]]></system-out>
   </testcase>
-  <testcase name="testInvalidPointsTooHigh" classname="roadregistry.AddDemeritPointsTest" time="0.004">
+  <testcase name="testInvalidPointsTooHigh" classname="roadregistry.AddDemeritPointsTest" time="0.002">
     <system-out><![CDATA[Person with this ID have already existed
 Demerit points must be between 1 and 6
 ]]></system-out>
