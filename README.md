@@ -3,6 +3,11 @@
 This is a Maven-based Java project developed for the RoadRegistry assignment.  
 It contains the complete implementation and testing of core functionalities for managing people and traffic violations.
 
+
+Member 1: Muhammad Sameeruddin 
+Member 2: Krishna Singh
+Member 3: Clint Nelson Ferreira
+Member 4: Nguyen Vu Duy Anh
 ---
 
 Included Features
@@ -15,9 +20,4 @@ Included Features
 
 ---
 
-Running Tests Locally
 
-To run all tests:
-
-```bash
-mvn clean test
